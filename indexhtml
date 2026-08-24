@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="true">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1a1a2e">
+  <title>Who's the Worst?</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Fredoka', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      box-sizing: border-box;
+    }
+
+    #app {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .font-bangers { font-family: 'Bangers', cursive; }
+
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(60px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInDown {
+      from { opacity: 0; transform: translateY(-60px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes cardFlip {
+      0% { transform: rotateY(-90deg) scale(0.8); opacity: 0; }
+      50% { transform: rotateY(0deg) scale(1.05); }
+      100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      75% { transform: translateX(3px); }
+    }
+
+    @keyframes stamp {
+      0% { transform: rotate(-15deg) scale(0); opacity: 0; }
+      50% { transform: rotate(-5deg) scale(1.1); }
+      100% { transform: rotate(0deg) scale(1); opacity: 1; }
+    }
+
+    @keyframes timerPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(255,107,107,0.5); }
+      50% { box-shadow: 0 0 40px rgba(255,107,107,0.9); }
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(400px) rotate(360deg); opacity: 0; }
+    }
+
+    .animate-slide-in-up { animation: slideInUp 0.6s ease-out; }
+    .animate-slide-in-down { animation: slideInDown 0.6s ease-out; }
+    .animate-card-flip { animation: cardFlip 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+    .animate-pulse-subtle { animation: pulse 2s ease-in-out infinite; }
+    .animate-shake { animation: shake 0.4s ease-in-out; }
+    .animate-stamp { animation: stamp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .animate-timer-pulse { animation: timerPulse 1s ease-in-out infinite; }
+    .animate-glow { animation: glow 2s ease-in-out infinite; }
+    .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+
+    .confetti {
+      position: absolute;
+      top: 0;
+      font-size: 1.5rem;
+      animation: confettiFall linear forwards;
+    }
+
+    .card {
+      aspect-ratio: 3/4;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+    }
+
+    .timer-ring {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: conic-gradient(#ff6b6b var(--timer-progress), transparent var(--timer-progress));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    .player-btn {
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 3px solid transparent;
+    }
+
+    .player-btn:active {
+      transform: scale(0.9);
+    }
+
+    .player-btn.selected {
+      border-color: #ffd700;
+      box-shadow: 0 0 20px rgba(255,215,0,0.8);
+    }
+
+    .nav-arrow {
+      opacity: 0.4;
+      transition: opacity 0.2s;
+      background: none;
+      border: none;
+      color: white;
+    }
+
+    .nav-arrow:active {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+
+    .nav-arrow.disabled {
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    input, button {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input[type="text"] {
+      font-size: 16px;
+    }
+
+    button {
+      font-size: 16px;
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+ </head>
+ <body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-950 text-white">
+  <div id="app" class="w-full h-full"></div>
+  <script>
+    // Game State
+    const gameState = {
+      screen: 'menu',
+      players: [],
+      currentCardIndex: 0,
+      currentPlayerVoted: null,
+      scores: {},
+      round: 1,
+      soundEnabled: true,
+      timerActive: false,
+      timeRemaining: 30,
+      selectedWorst: null,
+      roundLocked: false,
+      selectedAnswer: null,
+      winningScore: 5,
+      winner: null,
+      timerInterval: null
+    };
+
+    // Card Database
+    const cards = [
+      { text: "Who would sacrifice everyone else to save themselves in a zombie apocalypse?", emoji: "🧟" },
+      { text: "Who has the most unhinged browser history?", emoji: "🕵️" },
+      { text: "Who would be the first to start a cult?", emoji: "🕯️" },
+      { text: "Who would ghost their own wedding?", emoji: "👰" },
+      { text: "Who has the most chaotic energy at 3 AM?", emoji: "🌙" },
+      { text: "Who would get kicked out of a casino for being 'too lucky'?", emoji: "🎰" },
+      { text: "Who would be the worst person to trust with a secret?", emoji: "🤐" },
+      { text: "Who would start drama at a funeral?", emoji: "⚰️" },
+      { text: "Who would accidentally become a meme?", emoji: "📸" },
+      { text: "Who would get into a fight with a child... and lose?", emoji: "🧒" },
+      { text: "Who would make the worst motivational speaker?", emoji: "🎤" },
+      { text: "Who would be the most annoying person stuck in an elevator with?", emoji: "🛗" },
+      { text: "Who has definitely cried in a public bathroom?", emoji: "🚻" },
+      { text: "Who would get banned from an all-you-can-eat buffet?", emoji: "🍽️" },
+      { text: "Who would fake their own death for attention?", emoji: "💀" },
+      { text: "Who has the most 'I should probably see a therapist' moments?", emoji: "🛋️" },
+      { text: "Who would sell out their friends for a million dollars?", emoji: "💰" },
+      { text: "Who would survive longest by being absolutely insufferable?", emoji: "🏝️" },
+      { text: "Who would send a risky text and immediately throw their phone in the ocean?", emoji: "📱" },
+      { text: "Who's most likely to be haunted by their own bad decisions?", emoji: "👻" },
+      { text: "Who would accidentally text their ex 'I miss you' at 2 AM?", emoji: "💔" },
+      { text: "Who has the most chaotic friend group energy?", emoji: "🎢" },
+      { text: "Who would be the worst person on a road trip?", emoji: "🚗" },
+      { text: "Who would definitely cheat at board games?", emoji: "🎲" },
+      { text: "Who would be voted off a reality show first?", emoji: "📺" },
+      { text: "Who has the most questionable takes?", emoji: "🗣️" },
+      { text: "Who would accidentally burn down a kitchen making toast?", emoji: "🔥" },
+      { text: "Who would be the worst roommate?", emoji: "🏠" },
+      { text: "Who has definitely sniffed something to see if it was bad?", emoji: "👃" },
+      { text: "Who would win 'Most Likely to End Up in Jail' superlative?", emoji: "🚔" }
+    ];
+
+    const avatars = ['😎', '🤪', '😈', '🤓', '🥳', '😏', '🧐', '🤠', '👻', '🤡', '🦊', '🐱', '🐶', '🦄', '🦁', '👹'];
+
+    // Solo Mode Questions
+    const soloQuestions = [
+      {
+        text: "Who would be the worst person to accidentally send a risky text to?",
+        answers: [
+          { emoji: "😱", text: "Your boss during the company meeting", detail: "Career-ending potential: Maximum" },
+          { emoji: "👵", text: "Your grandmother on Christmas Eve", detail: "Family shame: Eternal" },
+          { emoji: "👮", text: "The local police department's group chat", detail: "Legal consequences: Probable" },
+          { emoji: "📺", text: "A live news broadcast you're screen-sharing to", detail: "Viral potential: Infinite" }
+        ]
+      },
+      {
+        text: "Who's the worst person to be stuck in an elevator with for 10 minutes?",
+        answers: [
+          { emoji: "🧏", text: "Someone who doesn't know personal space", detail: "Comfort level: Severely compromised" },
+          { emoji: "💔", text: "Your ex from 5 years ago", detail: "Awkwardness rating: Off the charts" },
+          { emoji: "😷", text: "Someone experiencing digestive distress", detail: "Air quality: Hazardous" },
+          { emoji: "🎵", text: "Someone singing opera at full volume", detail: "Eardrum damage: Imminent" }
+        ]
+      },
+      {
+        text: "Who would be the worst roommate to share a bathroom with?",
+        answers: [
+          { emoji: "🎨", text: "An artist who uses all the wall space", detail: "Shower space: Negative" },
+          { emoji: "⏰", text: "Someone who takes 3-hour showers", detail: "Your shower time: Never" },
+          { emoji: "🧴", text: "Someone with 47 different hair products", detail: "Counter space: Occupied" },
+          { emoji: "🪞", text: "Someone who never cleans the mirror", detail: "Visibility: Compromised" }
+        ]
+      },
+      {
+        text: "Who would make the worst person to carpool with?",
+        answers: [
+          { emoji: "🚙", text: "Someone who drives 15 mph under the speed limit", detail: "Commute time: Eternal" },
+          { emoji: "🎤", text: "Someone who sings off-key to every song", detail: "Earplugs: Required" },
+          { emoji: "💨", text: "Someone who hasn't used deodorant in weeks", detail: "Window status: Permanently down" },
+          { emoji: "📱", text: "Someone texting and driving", detail: "Anxiety level: Maximum" }
+        ]
+      },
+      {
+        text: "Who would be the worst person to go to a concert with?",
+        answers: [
+          { emoji: "📸", text: "Someone recording the entire show on their phone", detail: "Concert experience: Blocked" },
+          { emoji: "🍹", text: "Someone who gets drunk and starts a mosh pit", detail: "Your safety: Questionable" },
+          { emoji: "💬", text: "Someone who talks through the entire performance", detail: "Hearing the music: Impossible" },
+          { emoji: "👃", text: "Someone who doesn't believe in showering", detail: "Fresh air: Desperately needed" }
+        ]
+      }
+    ];
+
+    // Utility Functions
+    const playSound = (type) => {
+      if (!gameState.soundEnabled) return;
+
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        switch(type) {
+          case 'card':
+            oscillator.frequency.value = 800;
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+            break;
+          case 'select':
+            oscillator.frequency.value = 600;
+            gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.15);
+            break;
+          case 'tick':
+            oscillator.frequency.value = 1200;
+            gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.05);
+            break;
+          case 'stamp':
+            oscillator.frequency.value = 400;
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.2);
+            break;
+          case 'win':
+            [523, 659, 784, 1046].forEach((freq, i) => {
+              setTimeout(() => {
+                try {
+                  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                  const o = ctx.createOscillator();
+                  const g = ctx.createGain();
+                  o.connect(g);
+                  g.connect(ctx.destination);
+                  o.frequency.value = freq;
+                  g.gain.setValueAtTime(0.15, ctx.currentTime);
+                  g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                  o.start(ctx.currentTime);
+                  o.stop(ctx.currentTime + 0.3);
+                } catch (e) {}
+              }, i * 120);
+            });
+            break;
+        }
+      } catch (e) {}
+    };
+
+    // Render Functions
+    const renderMenu = () => {
+      return `
+        <div class="w-full h-full flex flex-col items-center justify-center p-6">
+          <div class="mb-12 text-center">
+            <h1 class="font-bangers text-6xl md:text-7xl mb-2 animate-pulse-subtle" style="color: #ff6b6b;">
+              Who's the Worst?
+            </h1>
+            <p class="text-lg opacity-70">The party game for friends who hate each other</p>
+          </div>
+
+          <div class="w-full max-w-xs space-y-4">
+            <button onclick="goToPlayerSetup()" class="w-full py-4 px-6 bg-gradient-to-r from-red-600 to-red-700 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-red-500/50 transition-all transform active:scale-95">
+              👥 Multiplayer
+            </button>
+
+            <button onclick="startSoloMode()" class="w-full py-4 px-6 bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all transform active:scale-95">
+              🎯 Solo Mode
+            </button>
+
+            <button onclick="toggleSound()" class="w-full py-3 px-6 bg-slate-700 hover:bg-slate-600 rounded-xl font-semibold transition-all transform active:scale-95">
+              ${gameState.soundEnabled ? '🔊' : '🔇'} Sound: ${gameState.soundEnabled ? 'ON' : 'OFF'}
+            </button>
+
+            <button onclick="showHowToPlay()" class="w-full py-3 px-6 bg-slate-700 hover:bg-slate-600 rounded-xl font-semibold transition-all transform active:scale-95">
+              ❓ How to Play
+            </button>
+          </div>
+        </div>
+      `;
+    };
+
+    const renderPlayerSetup = () => {
+      return `
+        <div class="w-full h-full flex flex-col p-6 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-950">
+          <div class="flex items-center justify-between mb-6">
+            <button onclick="backToMenu()" class="text-3xl">←</button>
+            <h2 class="font-bangers text-3xl">Setup Game</h2>
+            <div class="w-12"></div>
+          </div>
+
+          <div class="mb-6">
+            <label class="block text-sm font-semibold mb-2 opacity-70">Player Name</label>
+            <div class="flex gap-2">
+              <input
+                type="text"
+                id="playerInput"
+                placeholder="Enter name..."
+                maxlength="12"
+                class="flex-1 px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-red-500"
+                onkeypress="if(event.key==='Enter') addPlayer()"
+              />
+              <button onclick="addPlayer()" class="px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-bold transition-all transform active:scale-95">
+                +
+              </button>
+            </div>
+          </div>
+
+          <div class="flex-1 mb-6 overflow-y-auto hide-scrollbar">
+            <div class="space-y-2">
+              ${gameState.players.map((p, i) => `
+                <div class="flex items-center justify-between p-3 bg-slate-800 rounded-lg border border-slate-700">
+                  <div class="flex items-center gap-3">
+                    <span class="text-3xl">${p.avatar}</span>
+                    <span class="font-semibold">${p.name}</span>
+                  </div>
+                  <button onclick="removePlayer(${i})" class="text-red-400 hover:text-red-300 text-xl transition">
+                    ✕
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+            ${gameState.players.length === 0 ? `
+              <div class="text-center py-12 opacity-50">
+                <p class="text-lg">No players yet</p>
+              </div>
+            ` : ''}
+          </div>
+
+          <button
+            onclick="startGame()"
+            class="w-full py-4 bg-gradient-to-r from-green-600 to-green-700 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-green-500/50 transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            ${gameState.players.length < 2 ? 'disabled' : ''}
+          >
+            ${gameState.players.length < 2 ? `Need ${2 - gameState.players.length} more player(s)` : '🚀 Start Game!'}
+          </button>
+        </div>
+      `;
+    };
+
+    const renderGameplay = () => {
+      const card = cards[gameState.currentCardIndex % cards.length];
+      const timerProgress = (gameState.timeRemaining / 30) * 100;
+      const cardNumber = (gameState.currentCardIndex % cards.length) + 1;
+      const totalCards = cards.length;
+
+      return `
+        <div class="w-full h-full flex flex-col items-center justify-between p-4 md:p-6 relative">
+          <div class="w-full flex justify-between items-center mb-4 text-sm opacity-70">
+            <span>Round ${gameState.round}</span>
+            <span class="font-semibold">Card ${cardNumber}/${totalCards}</span>
+            <button onclick="openMenu()" class="text-xl opacity-60 hover:opacity-100 transition">☰</button>
+          </div>
+
+          <div class="w-full max-w-md flex flex-wrap gap-2 justify-center mb-2">
+            ${gameState.players.map(p => `
+              <div class="flex items-center gap-1 bg-slate-800/70 rounded-full px-3 py-1 text-xs font-semibold">
+                <span>${p.avatar}</span><span>${p.name}</span><span class="text-yellow-400">${gameState.scores[p.name]}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="flex-1 flex flex-col items-center justify-center w-full max-w-md">
+            <div class="card bg-gradient-to-br from-red-600 to-red-800 w-full max-w-xs p-8 flex flex-col items-center justify-center text-center mb-6 animate-card-flip shadow-2xl border-2 border-red-400 relative overflow-hidden">
+              <span class="absolute -bottom-8 -right-6 text-[9rem] opacity-10 rotate-12 pointer-events-none select-none">${card.emoji}</span>
+              <span class="text-5xl mb-6 relative z-10">${card.emoji}</span>
+              <p class="text-2xl font-bold leading-tight text-white relative z-10">
+                ${card.text}
+              </p>
+            </div>
+
+            <div class="mb-6 ${gameState.timeRemaining <= 5 ? 'animate-timer-pulse' : ''}">
+              <div class="timer-ring" style="--timer-progress: ${timerProgress}%">
+                <div class="text-center">
+                  <div class="text-3xl font-bold">${gameState.timeRemaining}</div>
+                  <div class="text-xs opacity-70">seconds</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          ${!gameState.roundLocked ? `
+            <div class="absolute left-0 right-0 top-1/2 transform -translate-y-1/2 flex justify-between px-4 pointer-events-none">
+              <button onclick="previousCard()" class="nav-arrow text-4xl pointer-events-auto ${gameState.currentCardIndex === 0 ? 'disabled' : ''} transform active:scale-110 transition">
+                ◀
+              </button>
+              <button onclick="nextCard()" class="nav-arrow text-4xl pointer-events-auto transform active:scale-110 transition">
+                ▶
+              </button>
+            </div>
+          ` : ''}
+
+          <div class="w-full max-w-md">
+            ${gameState.roundLocked ? `
+              <div class="text-center py-8 animate-stamp">
+                <div class="text-6xl mb-4">✓</div>
+                <p class="font-bangers text-3xl text-yellow-400">${gameState.players[gameState.selectedWorst].name}</p>
+                <p class="opacity-70 mt-2">is the Worst!</p>
+              </div>
+              <button onclick="nextCard()" class="w-full py-3 bg-purple-600 hover:bg-purple-700 rounded-xl font-bold transition-all transform active:scale-95 mt-4">
+                Next Card →
+              </button>
+            ` : `
+              <div class="grid grid-cols-2 gap-3 md:gap-4">
+                ${gameState.players.map((p, i) => `
+                  <button
+                    onclick="selectWorst(${i})"
+                    class="player-btn p-4 bg-slate-800 hover:bg-slate-700 rounded-xl border-3 border-slate-700 transition-all ${gameState.selectedWorst === i ? 'selected' : ''}"
+                  >
+                    <div class="text-4xl mb-2">${p.avatar}</div>
+                    <div class="font-semibold text-sm">${p.name}</div>
+                  </button>
+                `).join('')}
+              </div>
+              ${gameState.selectedWorst !== null ? `
+                <button onclick="lockRound()" class="w-full mt-4 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-yellow-500/50 transition-all transform active:scale-95">
+                  🔒 Lock In!
+                </button>
+              ` : ''}
+            `}
+          </div>
+        </div>
+      `;
+    };
+
+    const renderWinner = () => {
+      const winner = gameState.winner;
+      const sorted = [...gameState.players].sort((a, b) => gameState.scores[b.name] - gameState.scores[a.name]);
+      let confetti = '';
+      const emojis = ['🎉','🎊','⭐','✨','🏆'];
+      for (let i = 0; i < 24; i++) {
+        const left = Math.random() * 100;
+        const delay = Math.random() * 0.6;
+        const duration = 1.8 + Math.random() * 1.2;
+        const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+        confetti += `<span class="confetti" style="left:${left}%; animation-delay:${delay}s; animation-duration:${duration}s;">${emoji}</span>`;
+      }
+
+      return `
+        <div class="w-full h-full flex flex-col items-center justify-center p-6 relative overflow-hidden">
+          <div class="absolute inset-0 pointer-events-none">${confetti}</div>
+          <div class="text-center mb-8 animate-stamp relative z-10">
+            <div class="text-7xl mb-4">🏆</div>
+            <h1 class="font-bangers text-5xl md:text-6xl mb-2 text-yellow-400">${winner.name} Wins!</h1>
+            <p class="text-lg opacity-70">Congratulations, you're officially "The Worst" 😈</p>
+          </div>
+
+          <div class="w-full max-w-xs space-y-2 mb-8 relative z-10">
+            ${sorted.map((p, i) => `
+              <div class="flex items-center justify-between p-3 rounded-lg ${i === 0 ? 'bg-yellow-500/20 border border-yellow-400' : 'bg-slate-800 border border-slate-700'}">
+                <div class="flex items-center gap-3">
+                  <span class="font-bold opacity-60">#${i + 1}</span>
+                  <span class="text-2xl">${p.avatar}</span>
+                  <span class="font-semibold">${p.name}</span>
+                </div>
+                <span class="font-bold text-yellow-400">${gameState.scores[p.name]} pts</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="w-full max-w-xs space-y-3 relative z-10">
+            <button onclick="rematch()" class="w-full py-4 px-6 bg-gradient-to-r from-green-600 to-green-700 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-green-500/50 transition-all transform active:scale-95">
+              🔁 Rematch
+            </button>
+            <button onclick="backToMenu()" class="w-full py-3 px-6 bg-slate-700 hover:bg-slate-600 rounded-xl font-semibold transition-all transform active:scale-95">
+              🏠 Main Menu
+            </button>
+          </div>
+        </div>
+      `;
+    };
+
+    const renderSoloGame = () => {
+      const question = soloQuestions[gameState.currentCardIndex % soloQuestions.length];
+
+      return `
+        <div class="w-full h-full overflow-auto hide-scrollbar bg-gradient-to-br from-purple-900 via-slate-900 to-purple-950 flex flex-col">
+          <header class="flex-shrink-0 px-4 pt-4 pb-2">
+            <div class="max-w-lg mx-auto w-full">
+              <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-3 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-3xl">😈</span>
+                  <h1 class="text-xl font-black text-white drop-shadow-lg">Who's the Worst?</h1>
+                </div>
+                <button onclick="backToMenu()" class="text-2xl opacity-70 hover:opacity-100 transition">✕</button>
+              </div>
+            </div>
+          </header>
+
+          <section class="flex-shrink-0 px-4 py-3">
+            <div class="max-w-lg mx-auto w-full">
+              <div class="bg-gradient-to-br from-red-600 to-red-800 rounded-3xl p-5 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-3 right-3 bg-black/20 rounded-full px-2 py-1">
+                  <span class="text-white text-xs font-bold">❓ QUESTION</span>
+                </div>
+                <div class="absolute -bottom-6 -right-6 text-8xl opacity-10">🔥</div>
+                <p class="text-white text-xl font-extrabold leading-relaxed mt-4 relative z-10">${question.text}</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="flex-1 px-4 py-2 overflow-auto">
+            <div class="max-w-lg mx-auto w-full">
+              <p class="text-white/80 text-center text-sm font-semibold mb-3">👆 Tap to select your answer</p>
+              <div id="answer-cards" class="space-y-3 pb-4">
+                ${question.answers.map((answer, idx) => `
+                  <div class="bg-gradient-to-br from-white to-slate-50 rounded-2xl p-4 shadow-xl cursor-pointer border-4 border-transparent hover:border-yellow-400 transition-all" onclick="selectSoloAnswer(this, ${idx})">
+                    <div class="flex items-start gap-3">
+                      <span class="text-3xl">${answer.emoji}</span>
+                      <div class="flex-1">
+                        <p class="text-gray-800 font-bold text-lg">${answer.text}</p>
+                        <p class="text-gray-500 text-sm mt-1">${answer.detail}</p>
+                      </div>
+                      <div class="bg-gray-100 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">
+                        <span class="text-gray-400 text-xs">${String.fromCharCode(65 + idx)}</span>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </section>
+
+          <footer class="flex-shrink-0 px-4 pb-4 pt-2">
+            <div class="max-w-lg mx-auto w-full">
+              <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-3 flex items-center justify-between gap-3">
+                <button class="bg-white/20 hover:bg-white/30 transition-colors rounded-xl p-3 text-white" onclick="previousSoloCard()">
+                  <span class="text-xl">⬅️</span>
+                </button>
+                <button id="submit-btn" class="flex-1 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 rounded-xl py-3 px-6 font-black text-gray-900 text-lg shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled onclick="submitSoloAnswer()">
+                  🎯 LOCK IN ANSWER
+                </button>
+                <button class="bg-white/20 hover:bg-white/30 transition-colors rounded-xl p-3 text-white" onclick="nextSoloCard()">
+                  <span class="text-xl">➡️</span>
+                </button>
+              </div>
+            </div>
+          </footer>
+        </div>
+      `;
+    };
+
+    const renderHowToPlay = () => {
+      return `
+        <div class="w-full h-full flex flex-col p-6 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-950">
+          <button onclick="backToMenu()" class="text-3xl mb-6">←</button>
+
+          <h2 class="font-bangers text-4xl mb-8">How to Play</h2>
+
+          <div class="flex-1 overflow-y-auto hide-scrollbar space-y-6">
+            <div class="bg-slate-800 p-4 rounded-xl border-l-4 border-red-500">
+              <h3 class="font-bold text-lg mb-2">🎴 The Card</h3>
+              <p class="opacity-80">Read the scenario out loud. A card asks "Who would...?"</p>
+            </div>
+
+            <div class="bg-slate-800 p-4 rounded-xl border-l-4 border-yellow-500">
+              <h3 class="font-bold text-lg mb-2">⏱️ The Timer</h3>
+              <p class="opacity-80">You have 30 seconds to debate and decide. When time's up, you MUST choose!</p>
+            </div>
+
+            <div class="bg-slate-800 p-4 rounded-xl border-l-4 border-purple-500">
+              <h3 class="font-bold text-lg mb-2">🗳️ The Vote</h3>
+              <p class="opacity-80">Everyone taps on who they think is "the worst." Majority wins... or tie-break rules apply!</p>
+            </div>
+
+            <div class="bg-slate-800 p-4 rounded-xl border-l-4 border-green-500">
+              <h3 class="font-bold text-lg mb-2">🏆 The Point</h3>
+              <p class="opacity-80">The person voted "the worst" gets a point. First to 5 points wins the game.</p>
+            </div>
+
+            <div class="bg-slate-800 p-4 rounded-xl border-l-4 border-blue-500">
+              <h3 class="font-bold text-lg mb-2">🎮 Controls</h3>
+              <p class="opacity-80">Swipe or tap arrows to flip through cards. Tap players to select.</p>
+            </div>
+          </div>
+
+          <button onclick="backToMenu()" class="w-full mt-8 py-3 bg-red-600 hover:bg-red-700 rounded-xl font-bold transition-all transform active:scale-95">
+            Back to Menu
+          </button>
+        </div>
+      `;
+    };
+
+    // Game Functions
+    const addPlayer = () => {
+      const input = document.getElementById('playerInput');
+      const name = input?.value?.trim();
+
+      if (!name || gameState.players.length >= 8) return;
+      if (gameState.players.some(p => p.name.toLowerCase() === name.toLowerCase())) return;
+
+      const usedAvatars = gameState.players.map(p => p.avatar);
+      const available = avatars.filter(a => !usedAvatars.includes(a));
+      const avatar = available[Math.floor(Math.random() * available.length)] || '🎮';
+
+      gameState.players.push({ name, avatar });
+      gameState.scores[name] = 0;
+      playSound('card');
+      render();
+
+      setTimeout(() => {
+        const newInput = document.getElementById('playerInput');
+        if (newInput) newInput.focus();
+      }, 0);
+    };
+
+    const removePlayer = (index) => {
+      const name = gameState.players[index].name;
+      delete gameState.scores[name];
+      gameState.players.splice(index, 1);
+      playSound('select');
+      render();
+    };
+
+    const startGame = () => {
+      if (gameState.players.length < 2) return;
+      gameState.screen = 'gameplay';
+      gameState.currentCardIndex = 0;
+      gameState.round = 1;
+      gameState.selectedWorst = null;
+      gameState.roundLocked = false;
+      gameState.winner = null;
+      gameState.players.forEach(p => gameState.scores[p.name] = 0);
+      gameState.timerActive = true;
+      gameState.timeRemaining = 30;
+      startTimer();
+      playSound('card');
+      render();
+    };
+
+    const rematch = () => {
+      startGame();
+    };
+
+    const startTimer = () => {
+      if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+
+      gameState.timerInterval = setInterval(() => {
+        if (gameState.roundLocked) {
+          clearInterval(gameState.timerInterval);
+          return;
+        }
+
+        gameState.timeRemaining--;
+
+        if (gameState.timeRemaining <= 5 && gameState.timeRemaining > 0) {
+          playSound('tick');
+        }
+
+        if (gameState.timeRemaining <= 0) {
+          clearInterval(gameState.timerInterval);
+          gameState.timerActive = false;
+        }
+
+        render();
+      }, 1000);
+    };
+
+    const nextCard = () => {
+      if (gameState.roundLocked) {
+        // Check for a winner before moving on
+        const winnerPlayer = gameState.players.find(p => gameState.scores[p.name] >= gameState.winningScore);
+        if (winnerPlayer) {
+          gameState.winner = winnerPlayer;
+          gameState.screen = 'winner';
+          if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+          playSound('win');
+          render();
+          return;
+        }
+
+        gameState.currentCardIndex++;
+        gameState.round++;
+        gameState.selectedWorst = null;
+        gameState.roundLocked = false;
+        gameState.timeRemaining = 30;
+        playSound('card');
+        startTimer();
+        render();
+      } else {
+        gameState.currentCardIndex++;
+        playSound('card');
+        render();
+      }
+    };
+
+    const previousCard = () => {
+      if (gameState.currentCardIndex > 0) {
+        gameState.currentCardIndex--;
+        playSound('card');
+        render();
+      }
+    };
+
+    const selectWorst = (playerIndex) => {
+      gameState.selectedWorst = playerIndex;
+      playSound('select');
+      render();
+    };
+
+    const lockRound = () => {
+      if (gameState.selectedWorst === null) return;
+
+      gameState.roundLocked = true;
+      const worst = gameState.players[gameState.selectedWorst];
+      gameState.scores[worst.name]++;
+      clearInterval(gameState.timerInterval);
+      playSound('stamp');
+      render();
+    };
+
+    const toggleSound = () => {
+      gameState.soundEnabled = !gameState.soundEnabled;
+      playSound('select');
+      render();
+    };
+
+    const startSoloMode = () => {
+      gameState.screen = 'soloGame';
+      gameState.currentCardIndex = 0;
+      gameState.selectedAnswer = null;
+      playSound('card');
+      render();
+    };
+
+    const goToPlayerSetup = () => {
+      gameState.screen = 'playerSetup';
+      gameState.players = [];
+      gameState.scores = {};
+      render();
+    };
+
+    const backToMenu = () => {
+      gameState.screen = 'menu';
+      if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+      render();
+    };
+
+    const openMenu = () => {
+      backToMenu();
+    };
+
+    const render = () => {
+      const app = document.getElementById('app');
+      let content = '';
+
+      switch(gameState.screen) {
+        case 'menu':
+          content = renderMenu();
+          break;
+        case 'playerSetup':
+          content = renderPlayerSetup();
+          break;
+        case 'gameplay':
+          content = renderGameplay();
+          break;
+        case 'winner':
+          content = renderWinner();
+          break;
+        case 'soloGame':
+          content = renderSoloGame();
+          break;
+        case 'howToPlay':
+          content = renderHowToPlay();
+          break;
+        default:
+          content = renderMenu();
+      }
+
+      app.innerHTML = content;
+    };
+
+    // Global Functions
+    window.goToPlayerSetup = goToPlayerSetup;
+    window.backToMenu = backToMenu;
+    window.addPlayer = addPlayer;
+    window.removePlayer = removePlayer;
+    window.startGame = startGame;
+    window.rematch = rematch;
+    window.toggleSound = toggleSound;
+    window.nextCard = nextCard;
+    window.previousCard = previousCard;
+    window.selectWorst = selectWorst;
+    window.lockRound = lockRound;
+    window.openMenu = openMenu;
+    window.showHowToPlay = () => {
+      gameState.screen = 'howToPlay';
+      render();
+    };
+    window.startSoloMode = startSoloMode;
+    window.selectSoloAnswer = (element, index) => {
+      document.querySelectorAll('#answer-cards div').forEach(el => {
+        el.classList.remove('border-yellow-400');
+        el.classList.add('border-transparent');
+      });
+      element.classList.add('border-yellow-400');
+      element.classList.remove('border-transparent');
+      gameState.selectedAnswer = index;
+      document.getElementById('submit-btn').disabled = false;
+      playSound('select');
+    };
+    window.submitSoloAnswer = () => {
+      if (gameState.selectedAnswer === null) return;
+      playSound('stamp');
+      document.getElementById('submit-btn').innerHTML = '✅ LOCKED IN!';
+      document.getElementById('submit-btn').disabled = true;
+      setTimeout(() => {
+        gameState.currentCardIndex++;
+        gameState.selectedAnswer = null;
+        render();
+      }, 800);
+    };
+    window.nextSoloCard = () => {
+      gameState.currentCardIndex++;
+      gameState.selectedAnswer = null;
+      playSound('card');
+      render();
+    };
+    window.previousSoloCard = () => {
+      if (gameState.currentCardIndex > 0) {
+        gameState.currentCardIndex--;
+        gameState.selectedAnswer = null;
+        playSound('card');
+        render();
+      }
+    };
+
+    render();
+  </script>
+ </body>
+</html>
