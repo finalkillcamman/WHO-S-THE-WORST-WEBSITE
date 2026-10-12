@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171717">
+  <meta name="description" content="Who's the Worst? The party game where you make your case, turn the table, and vote for whoever best fits the situation.">
+  <title>Who's the Worst? | Best Fit = Worst Fit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Who's the Worst home">
+      <span class="brand-mark" aria-hidden="true">W?</span>
+      <span class="brand-name">WHO'S THE <b>WORST?</b></span>
+    </a>
+    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+      <a href="#how-to-play">How to Play</a>
+      <a href="#golden-rule">The Golden Rule</a>
+      <a href="#the-debate">Make Your Case</a>
+      <a class="nav-cta" href="#rules">Get the Rules <span aria-hidden="true">↘</span></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero section-wrap" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> THE PARTY GAME FOR YOUR PEOPLE</p>
+        <h1>WHO'S THE<br><span>WORST?</span></h1>
+        <p class="hero-subtitle">Best fit. Worst fit. <strong>Let the debate begin.</strong></p>
+        <p class="hero-description">Flip a situation card, make your case, and convince the table who fits it best. Your friends know you. Now they get to prove it.</p>
+        <div class="hero-actions">
+          <a class="button button-dark" href="#how-to-play">Learn to Play <span aria-hidden="true">↓</span></a>
+          <a class="text-link" href="#the-debate">Prepare your defense <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="hero-note"><span class="note-star">✳</span><span>One card can change the whole room.</span></div>
+      </div>
+      <div class="hero-art" aria-label="Illustration of a party-game card and voting tokens">
+        <div class="burst burst-one">WHO<br>WOULD<br>DO THAT?!</div>
+        <div class="game-card">
+          <div class="card-top"><span>SITUATION CARD</span><span>NO. 001</span></div>
+          <div class="card-symbol">?!</div>
+          <p>WHO WOULD<br>GET CAUGHT<br><em>BLAMING THE DOG?</em></p>
+          <div class="card-bottom"><span>MAKE YOUR CASE</span><span>★ ★ ★</span></div>
+        </div>
+        <div class="token token-pink">VOTE</div>
+        <div class="token token-blue"></div>
+        <div class="token token-orange"></div>
+        <div class="art-caption">FRIENDS. HOT TAKES. QUESTIONABLE ALIBIS.</div>
+      </div>
+      <div class="hero-stamp" aria-hidden="true">PLAY<br>YOUR<br>CASE!</div>
+    </section>
+
+    <section class="ticker" aria-label="Game highlights">
+      <div class="ticker-track"><span>MAKE YOUR CASE</span><b>✳</b><span>TURN THE TABLE</span><b>✳</b><span>CAST YOUR VOTE</span><b>✳</b><span>MAKE YOUR CASE</span><b>✳</b><span>TURN THE TABLE</span><b>✳</b><span>CAST YOUR VOTE</span><b>✳</b></div>
+    </section>
+
+    <section class="golden-rule section-wrap" id="golden-rule">
+      <div class="section-kicker">01 / THE GOLDEN RULE</div>
+      <div class="golden-content">
+        <p class="big-rule">YOU'RE VOTING FOR WHOEVER <span>BEST FITS THE SITUATION!</span></p>
+        <div class="equation"><span>BEST FIT</span><b>=</b><span class="equation-highlight">WORST FIT</span><span class="laugh" aria-label="laughing">😂</span></div>
+        <p class="golden-footnote">The card sets the scene. The group decides who fits it. The debate? That's where things get interesting.</p>
+      </div>
+    </section>
+
+    <section class="how section-wrap" id="how-to-play">
+      <div class="section-heading">
+        <div><div class="section-kicker">02 / EASY TO LEARN</div><h2>HOW TO <span>PLAY</span></h2></div>
+        <p>No hands. No complicated scoring. Just situation cards, color-coded tokens, and a tally board.</p>
+      </div>
+      <div class="steps-grid">
+        <article class="step-card step-yellow"><span class="step-number">01</span><div class="step-icon" aria-hidden="true">▤</div><h3>FLIP & READ</h3><p>Flip the top situation card and read it out loud to the group.</p></article>
+        <article class="step-card step-pink"><span class="step-number">02</span><div class="step-icon" aria-hidden="true">☝</div><h3>PICK THE FIT</h3><p>Decide who best fits the situation. Remember: best fit means worst fit!</p></article>
+        <article class="step-card step-blue"><span class="step-number">03</span><div class="step-icon" aria-hidden="true">☏</div><h3>MAKE YOUR CASE</h3><p>Defend yourself, call out your friends, and try to change some minds.</p></article>
+        <article class="step-card step-orange"><span class="step-number">04</span><div class="step-icon" aria-hidden="true">●</div><h3>VOTE & TALLY</h3><p>Place your colored token, count the votes, and record them on the tally board.</p></article>
+      </div>
+      <div class="rules-strip"><div class="rules-strip-icon">↻</div><p><strong>Tokens go back!</strong> After each round, everyone gets their voting tokens back. The tally board keeps the running total.</p></div>
+    </section>
+
+    <section class="debate-section" id="the-debate">
+      <div class="debate-inner section-wrap">
+        <div class="debate-art" aria-hidden="true">
+          <div class="speech speech-a">IT WAS<br>NOT ME!</div>
+          <div class="speech speech-b">EXPLAIN<br>YOURSELF.</div>
+          <div class="speech speech-c">I HAVE<br>RECEIPTS.</div>
+          <div class="debate-star">✳</div>
+        </div>
+        <div class="debate-copy">
+          <div class="section-kicker">03 / DEFEND YOURSELF</div>
+          <h2>DON'T JUST<br>VOTE. <span>DEBATE.</span></h2>
+          <p>Think the group has it all wrong? Say your piece. Explain why someone else is a better fit. Build your case, defend your reputation, and see if you can turn the whole table.</p>
+          <ul class="debate-list">
+            <li><span>✓</span> Make your argument.</li>
+            <li><span>✓</span> Challenge the other side.</li>
+            <li><span>✓</span> Change minds before the vote.</li>
+          </ul>
+          <p class="debate-tagline">The table can change its mind. Your token casts the vote.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="endgame section-wrap" id="rules">
+      <div class="endgame-top"><div class="section-kicker">04 / THE FINAL TALLY</div><span class="tally-badge">THE TALLY BOARD</span></div>
+      <h2>WHO WILL BE<br><span>THE WORST OF THE WORST?</span></h2>
+      <div class="endgame-grid">
+        <div class="endgame-copy"><p>Each round, count the colored tokens in front of each player and record their votes on the tally board. Return the tokens to their owners, flip the next card, and keep the debate rolling.</p><p>When the game ends, the player with the most votes earns the crown. Wear it with absolutely no shame.</p><a class="button button-yellow" href="#how-to-play">Review How to Play <span aria-hidden="true">↑</span></a></div>
+        <div class="crown-card"><div class="crown" aria-hidden="true">♛</div><p>THE OFFICIAL TITLE</p><strong>WORST OF<br>THE WORST</strong><div class="crown-stars">★　★　★</div></div>
+      </div>
+    </section>
+
+    <section class="closing-cta">
+      <div class="closing-scribble" aria-hidden="true">?!</div>
+      <p class="section-kicker">GATHER YOUR PEOPLE</p>
+      <h2>YOUR FRIENDS<br>ARE ABOUT TO<br><span>GET REAL.</span></h2>
+      <p>Pick a card. Pick your target. Prepare your defense.</p>
+      <a class="button button-light" href="#home">Back to the top <span aria-hidden="true">↑</span></a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="#home"><span class="brand-mark">W?</span><span class="brand-name">WHO'S THE <b>WORST?</b></span></a>
+    <p>Best fit = worst fit. You know what to do.</p>
+    <span class="copyright">© <span id="year"></span> Who's the Worst?</span>
+  </footer>
+</body>
+</html>
