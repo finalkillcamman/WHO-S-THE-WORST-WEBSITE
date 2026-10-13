@@ -1,4 +1,4 @@
-# Who's The Worst? Website
+# Who's the Worst? Website
 
 A responsive, single-page website for the **Who's the Worst?** party card game.
 
