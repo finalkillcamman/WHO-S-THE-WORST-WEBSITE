@@ -38,3 +38,9 @@
   .hero-art{grid-column:1;grid-row:1}
   .hero-stamp{right:auto;left:0}
 }
+
+/* Fine-tune the desktop 3D logo position: roughly 2 inches left and slightly down. */
+@media(min-width:851px){
+  .hero-logo-heading{position:relative;transform:translate(-192px,30px)}
+  .logo-hint{position:relative;transform:translate(-192px,30px)}
+}
