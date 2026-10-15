@@ -44,7 +44,7 @@ async function start3D() {
   context.drawImage(image, 0, 0, canvas.width, canvas.height);
   const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
   const sideMaterial = new THREE.MeshStandardMaterial({ color: 0x171b28, roughness: 0.45, metalness: 0.24 });
-  const thickness = 0.34;
+  const thickness = 0.09;
   const cellW = planeW / canvas.width;
   const cellH = planeH / canvas.height;
   // Merge opaque cells horizontally into strips to avoid thousands of meshes.
@@ -86,53 +86,19 @@ async function start3D() {
   back.position.z = -thickness - .015;
   logo.add(back);
 
-  // Independently modeled gold crown: band, five raised points and gems.
-  const crown = new THREE.Group();
-  const gold = new THREE.MeshStandardMaterial({ color: 0xffc32c, metalness: .85, roughness: .19 });
-  const darkGold = new THREE.MeshStandardMaterial({ color: 0xb97812, metalness: .8, roughness: .24 });
-  const ruby = new THREE.MeshStandardMaterial({ color: 0xd9243c, metalness: .4, roughness: .12 });
-  const band = new THREE.Mesh(new THREE.CylinderGeometry(.67, .64, .35, 40, 1, true), gold);
-  band.position.y = -.15;
-  crown.add(band);
-  const rimTop = new THREE.Mesh(new THREE.TorusGeometry(.67, .065, 10, 40), darkGold);
-  rimTop.rotation.x = Math.PI / 2;
-  rimTop.position.y = .025;
-  crown.add(rimTop);
-  const rimBottom = rimTop.clone();
-  rimBottom.position.y = -.32;
-  crown.add(rimBottom);
-  for (let i = 0; i < 5; i++) {
-    const a = i * Math.PI * 2 / 5;
-    const tip = new THREE.Mesh(new THREE.ConeGeometry(.19, .75, 5), gold);
-    tip.position.set(Math.sin(a) * .56, .37, Math.cos(a) * .56);
-    crown.add(tip);
-    const ball = new THREE.Mesh(new THREE.SphereGeometry(.11, 12, 10), gold);
-    ball.position.set(Math.sin(a) * .56, .79, Math.cos(a) * .56);
-    crown.add(ball);
-    const gem = new THREE.Mesh(new THREE.OctahedronGeometry(.105), ruby);
-    gem.position.set(Math.sin(a) * .674, -.12, Math.cos(a) * .674);
-    crown.add(gem);
-  }
-  crown.position.set(2.85, planeH * .38 + .6, .55);
-  crown.rotation.z = -.18;
-  crown.scale.setScalar(.78);
-  rig.add(crown);
-
-  let dragging = false, lastX = 0, lastY = 0, targetX = -.08, targetY = -.12;
-  let crownBoost = 0;
+  let dragging = false, lastX = 0, lastY = 0, targetX = -.04, targetY = -.08;
   renderer.domElement.addEventListener("pointerdown", (event) => {
     dragging = true;
     lastX = event.clientX;
     lastY = event.clientY;
     renderer.domElement.setPointerCapture(event.pointerId);
-    const bounds = renderer.domElement.getBoundingClientRect();
-    if ((event.clientX - bounds.left) / bounds.width > .65 && (event.clientY - bounds.top) / bounds.height < .55) crownBoost = 0.22;
   });
   renderer.domElement.addEventListener("pointermove", (event) => {
     if (!dragging) return;
     targetY += (event.clientX - lastX) * .008;
     targetX += (event.clientY - lastY) * .006;
-    targetX = THREE.MathUtils.clamp(targetX, -.9, .9);
+    targetX = THREE.MathUtils.clamp(targetX, -.55, .55);
+    targetY = THREE.MathUtils.clamp(targetY, -.65, .65);
     lastX = event.clientX;
     lastY = event.clientY;
   });
@@ -149,9 +115,6 @@ async function start3D() {
     const t = clock.getElapsedTime();
     rig.rotation.x += (targetX - rig.rotation.x) * .09;
     rig.rotation.y += (targetY - rig.rotation.y) * .09;
-    crown.rotation.y += .007 + crownBoost;
-    crownBoost *= .95;
-    crown.position.y = planeH * .38 + .6 + Math.sin(t * 1.8) * .09;
     renderer.render(scene, camera);
   }
   const observer = new ResizeObserver(() => {
