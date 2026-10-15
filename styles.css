@@ -94,3 +94,10 @@
  .hero-copy{grid-column:1!important;grid-row:1!important}
  .hero-art{grid-column:1!important;grid-row:2!important}
 }
+
+/* Raise the logo beneath the card; restore reliable touch/mouse rotation. */
+.hero-art .hero-logo-zone{margin-top:345px!important}
+.hero-art .hero-logo-zone .interactive-logo{position:relative;z-index:5;cursor:grab;touch-action:none;pointer-events:auto}
+.hero-art .hero-logo-zone .interactive-logo canvas{position:relative;z-index:6;cursor:grab;touch-action:none;pointer-events:auto}
+.hero-art .hero-logo-zone .interactive-logo canvas:active{cursor:grabbing}
+@media(max-width:560px){.hero-art .hero-logo-zone{margin-top:315px!important}}
