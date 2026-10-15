@@ -78,3 +78,19 @@
  .hero-copy{grid-column:1;grid-row:2}
  .hero-art{grid-column:1;grid-row:3}
 }
+
+/* Logo lives directly below the situation card, not in the copy column. */
+.hero-logo-zone{position:relative!important;left:auto!important;top:auto!important;transform:none!important;grid-column:auto!important;grid-row:auto!important;width:100%;margin:15px auto 0!important;padding:0!important;z-index:2}
+.hero-art{height:auto!important;min-height:650px;display:flex;flex-direction:column;align-items:center}
+.hero-art .hero-logo-zone{flex:0 0 auto;margin-top:435px!important}
+.hero-art .hero-logo-zone .interactive-logo{height:220px;max-width:440px}
+.hero-art .hero-logo-zone .hero-logo-heading{max-width:440px}
+.hero-art .hero-logo-zone .logo-hint{margin-top:4px!important}
+@media(min-width:851px){
+ .hero-copy{grid-column:2!important;grid-row:1!important}
+ .hero-art{grid-column:1!important;grid-row:1!important}
+}
+@media(max-width:850px){
+ .hero-copy{grid-column:1!important;grid-row:1!important}
+ .hero-art{grid-column:1!important;grid-row:2!important}
+}
