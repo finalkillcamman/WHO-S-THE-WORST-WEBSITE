@@ -20,3 +20,13 @@
 .crown-loading{font-size:140px;color:#d49a17;text-align:center;line-height:300px}
 .crown-reset{background:var(--yellow);border:2px solid var(--ink);border-radius:5px;padding:10px 15px;font:800 13px var(--body);cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
 @media(max-width:700px){.crown-showcase{grid-template-columns:1fr;gap:0;padding-top:30px}.crown-viewport{height:270px}}
+
+/* Center the interactive Who's the Worst logo in the hero */
+.hero{grid-template-columns:1fr 1fr}
+.hero-copy{display:flex;flex-direction:column;align-items:center;text-align:center}
+.hero-logo-heading{width:100%;max-width:560px;margin:10px auto 0}
+.interactive-logo{margin-inline:auto}
+.hero-copy .eyebrow,.hero-actions,.hero-note{justify-content:center}
+.hero-description{margin-inline:auto}
+.logo-hint{text-align:center}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.hero-copy{width:100%}}
