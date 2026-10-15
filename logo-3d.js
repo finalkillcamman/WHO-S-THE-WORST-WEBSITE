@@ -82,39 +82,12 @@ async function start3D() {
   front.position.z = .015;
   logo.add(front);
 
-  // Separate animated crown, matching the original gold branding.
-  const crown = new THREE.Group();
-  const gold = new THREE.MeshStandardMaterial({color:0xffc32c,metalness:.85,roughness:.19,side:THREE.DoubleSide});
-  const darkGold = new THREE.MeshStandardMaterial({color:0xb97812,metalness:.8,roughness:.24});
-  const ruby = new THREE.MeshStandardMaterial({color:0xd9243c,metalness:.4,roughness:.12});
-  const band = new THREE.Mesh(new THREE.CylinderGeometry(.67,.64,.35,40,1,true),gold);
-  band.position.y=-.15;crown.add(band);
-  for(const y of [.025,-.32]) {
-    const rim=new THREE.Mesh(new THREE.TorusGeometry(.67,.065,10,40),darkGold);
-    rim.rotation.x=Math.PI/2;rim.position.y=y;crown.add(rim);
-  }
-  for(let i=0;i<5;i++){
-    const a=i*Math.PI*2/5;
-    const tip=new THREE.Mesh(new THREE.ConeGeometry(.19,.75,5),gold);
-    tip.position.set(Math.sin(a)*.56,.37,Math.cos(a)*.56);crown.add(tip);
-    const ball=new THREE.Mesh(new THREE.SphereGeometry(.11,12,10),gold);
-    ball.position.set(Math.sin(a)*.56,.79,Math.cos(a)*.56);crown.add(ball);
-    const gem=new THREE.Mesh(new THREE.OctahedronGeometry(.105),ruby);
-    gem.position.set(Math.sin(a)*.674,-.12,Math.cos(a)*.674);crown.add(gem);
-  }
-  crown.position.set(2.85,planeH*.38+.6,.55);
-  crown.rotation.z=-.18;crown.scale.setScalar(.78);
-  rig.add(crown);
-  let crownBoost=0;
-
   let dragging = false, lastX = 0, lastY = 0, targetX = 0, targetY = 0;
   renderer.domElement.addEventListener("pointerdown", (event) => {
     dragging = true;
     lastX = event.clientX;
     lastY = event.clientY;
     renderer.domElement.setPointerCapture(event.pointerId);
-    const bounds=renderer.domElement.getBoundingClientRect();
-    if((event.clientX-bounds.left)/bounds.width>.65 && (event.clientY-bounds.top)/bounds.height<.55) crownBoost=.22;
   });
   renderer.domElement.addEventListener("pointermove", (event) => {
     if (!dragging) return;
@@ -136,9 +109,6 @@ async function start3D() {
   function animate() {
     frame = requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
-    crown.rotation.y+=.007+crownBoost;
-    crownBoost*=.95;
-    crown.position.y=planeH*.38+.6+Math.sin(t*1.8)*.09;
     rig.rotation.x += (targetX - rig.rotation.x) * .09;
     rig.rotation.y += (targetY - rig.rotation.y) * .09;
     renderer.render(scene, camera);
