@@ -30,3 +30,11 @@
 .hero-description{margin-inline:auto}
 .logo-hint{text-align:center}
 @media(max-width:850px){.hero{grid-template-columns:1fr}.hero-copy{width:100%}}
+
+/* Desktop: move the interactive logo to the right-hand side of the hero. */
+@media(min-width:851px){
+  .hero{grid-template-columns:1fr 1fr}
+  .hero-copy{grid-column:2;grid-row:1;align-items:center;text-align:center;width:100%}
+  .hero-art{grid-column:1;grid-row:1}
+  .hero-stamp{right:auto;left:0}
+}
