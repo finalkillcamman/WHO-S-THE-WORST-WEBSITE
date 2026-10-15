@@ -52,3 +52,12 @@
   .logo-hint{transform:none!important;position:relative;margin:0 auto 18px}
   .hero-subtitle,.hero-description,.hero-actions,.hero-note{position:relative;z-index:1}
 }
+
+/* Keep the 3D logo in its own hero layout space, never over body copy. */
+@media(min-width:851px){
+  .hero-copy{position:relative;min-width:0}
+  .hero-logo-heading{transform:none!important;position:relative!important;width:100%;max-width:480px;margin:0 auto 12px!important}
+  .interactive-logo{max-width:100%;margin:0 auto}
+  .logo-hint{transform:none!important;position:relative!important;margin:0 auto 22px!important}
+  .hero-subtitle,.hero-description,.hero-actions,.hero-note{position:relative;z-index:1}
+}
