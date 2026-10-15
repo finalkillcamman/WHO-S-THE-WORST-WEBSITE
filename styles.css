@@ -61,3 +61,20 @@
   .logo-hint{transform:none!important;position:relative!important;margin:0 auto 22px!important}
   .hero-subtitle,.hero-description,.hero-actions,.hero-note{position:relative;z-index:1}
 }
+
+/* Independent in-flow 3D logo: scrolls with the page and never covers copy. */
+.hero{align-items:start}
+.hero-logo-zone{grid-column:1/-1;grid-row:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;margin:0;padding:0 0 10px;transform:none;z-index:1}
+.hero-logo-zone .hero-logo-heading{position:static!important;transform:none!important;width:min(100%,520px);margin:0!important}
+.hero-logo-zone .interactive-logo{width:100%;max-width:520px}
+.hero-logo-zone .logo-hint{position:static!important;transform:none!important;margin:0!important;text-align:center}
+@media(min-width:851px){
+ .hero-logo-zone{justify-self:center;left:-85px}
+ .hero-copy{grid-column:2;grid-row:2}
+ .hero-art{grid-column:1;grid-row:2}
+}
+@media(max-width:850px){
+ .hero-logo-zone{left:0;grid-column:1;grid-row:1}
+ .hero-copy{grid-column:1;grid-row:2}
+ .hero-art{grid-column:1;grid-row:3}
+}
