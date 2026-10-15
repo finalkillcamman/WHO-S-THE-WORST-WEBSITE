@@ -99,6 +99,7 @@ async function start3D() {
     lastY = event.clientY;
   });
   const stop = () => { dragging = false; };
+  renderer.domElement.addEventListener("lostpointercapture", stop);
   renderer.domElement.addEventListener("pointerup", stop);
   renderer.domElement.addEventListener("pointercancel", stop);
   const fallback = mount.querySelector(".interactive-logo-fallback");
