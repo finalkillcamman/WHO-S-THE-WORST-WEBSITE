@@ -58,3 +58,15 @@
 .site-header .brand-3d #interactive-logo canvas{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;transform:none!important;display:block!important}
 .site-header .menu-toggle,.site-header .site-nav{z-index:2}
 @media(max-width:850px){.site-header .brand-3d{height:60px;width:145px}}
+
+/* Mobile overlap repair: isolate the crown scene from all text. */
+.crown-showcase{position:relative;isolation:isolate;overflow:hidden;align-items:start}
+.crown-showcase-copy{position:relative;z-index:2;min-width:0}
+.crown-viewport{position:relative!important;inset:auto!important;transform:none!important;overflow:hidden!important;isolation:isolate;contain:layout paint;z-index:1}
+.crown-viewport canvas{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;transform:none!important}
+@media(max-width:700px){
+ .crown-showcase{display:flex!important;flex-direction:column!important;gap:22px!important;padding-top:35px!important}
+ .crown-showcase-copy{width:100%!important;flex:none!important}
+ .crown-showcase-copy h2{position:relative;z-index:2;max-width:100%;overflow-wrap:normal}
+ .crown-viewport{display:block!important;flex:none!important;align-self:center!important;width:100%!important;height:280px!important;margin:0 auto!important}
+}
