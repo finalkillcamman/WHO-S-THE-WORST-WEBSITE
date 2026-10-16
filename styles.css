@@ -50,3 +50,11 @@
 .site-header .brand-3d .interactive-logo canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
 .site-header .brand-3d .interactive-logo-fallback{display:block;width:100%;height:100%;object-fit:contain}
 @media(max-width:560px){.site-header .brand-3d{width:160px}.site-header{gap:12px}}
+
+/* Header logo containment: 3D canvas must never overlap page copy. */
+.site-header{isolation:isolate;overflow:visible}
+.site-header .brand-3d{position:relative;align-self:center;height:64px;max-height:calc(100% - 8px);overflow:hidden;isolation:isolate;z-index:1}
+.site-header .brand-3d #interactive-logo{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-height:100%!important;overflow:hidden!important;transform:none!important;contain:layout paint size;clip-path:inset(0)}
+.site-header .brand-3d #interactive-logo canvas{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;transform:none!important;display:block!important}
+.site-header .menu-toggle,.site-header .site-nav{z-index:2}
+@media(max-width:850px){.site-header .brand-3d{height:60px;width:145px}}
