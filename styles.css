@@ -35,3 +35,11 @@
 .crown-showcase{clear:both}
 @media(max-width:850px){.hero{grid-template-columns:1fr}.hero-copy{grid-column:1;grid-row:1}.hero-art{grid-column:1;grid-row:2}.logo-showcase{padding-top:12px;padding-bottom:42px}.logo-showcase .interactive-logo{height:230px}}
 @media(max-width:560px){.logo-showcase .interactive-logo{height:200px}.logo-showcase{padding-bottom:38px}}
+
+/* Interactive logo occupies the original homepage logo position. */
+.hero-copy .hero-logo-zone{display:flex;flex-direction:column;align-items:flex-start;width:100%;max-width:520px;margin:10px 0 6px;position:relative}
+.hero-copy .hero-logo-heading{position:static!important;transform:none!important;width:100%;max-width:520px;margin:0!important;line-height:1}
+.hero-copy .interactive-logo{display:block;position:relative;width:100%;height:clamp(200px,25vw,310px);margin:0;overflow:hidden;touch-action:none;cursor:grab;pointer-events:auto}
+.hero-copy .interactive-logo canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+.hero-copy .logo-hint{position:static!important;transform:none!important;margin:0 0 8px!important;text-align:center;width:100%}
+@media(max-width:560px){.hero-copy .interactive-logo{height:220px}.hero-copy .hero-logo-zone{margin-top:4px}}
