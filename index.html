@@ -13,8 +13,8 @@
   <meta property="og:title" content="Who's the Worst? | Best Fit = Worst Fit">
   <meta property="og:description" content="The party game where you make your case, turn the table, and vote for whoever best fits the situation.">
   <meta property="og:image" content="./logo.png">
-  <link rel="stylesheet" href="styles.css?v=20261016-wishlist">
-  <script src="script.js?v=20261016-wishlist" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20261016-support2">
+  <script src="script.js?v=20261016-support2" defer></script>
   <script type="module" src="logo-3d.js?v=20261016-layout2"></script>
   <script type="module" src="crown-3d.js?v=20261016-layout2"></script>
 </head>
@@ -29,6 +29,7 @@
       <a href="#how-to-play">How to Play</a>
       <a href="#golden-rule">The Golden Rule</a>
       <a href="#the-debate">Make Your Case</a>
+      <a href="#support">Support</a>
       <a class="nav-cta" href="#rules">Get the Rules <span aria-hidden="true">↘</span></a>
     </nav>
   </header>
@@ -129,8 +130,23 @@
 
     <section class="wishlist-section section-wrap" id="wishlist" aria-labelledby="wishlist-title">
       <div class="wishlist-card">
-        <div class="wishlist-copy"><p class="section-kicker">BE FIRST IN LINE</p><h2 id="wishlist-title">WANT TO PLAY <span>WHO'S THE WORST?</span></h2><p>Show your interest in the game! Tap the heart to add a wishlist press.</p><p class="wishlist-disclaimer">This count is saved on your device. A shared community total is coming later.</p></div>
-        <div class="wishlist-action"><button type="button" class="wishlist-button" data-wishlist-button>♥ Add to Wishlist</button><p class="wishlist-count" aria-live="polite"><strong data-wishlist-count>0</strong> <span>wishlist presses on this device</span></p></div>
+        <div class="wishlist-copy"><p class="section-kicker">BE FIRST IN LINE</p><h2 id="wishlist-title">WANT TO PLAY <span>WHO'S THE WORST?</span></h2><p>Show your interest in the game! Add your wishlist interest once per device.</p><p class="wishlist-disclaimer">This count is saved on your device. A shared community total is coming later.</p></div>
+        <div class="wishlist-action"><button type="button" class="wishlist-button" data-wishlist-button>♥ Add to Wishlist</button><p class="wishlist-count" aria-live="polite"><strong data-wishlist-count>0</strong> <span>saved wishlist presses on this device</span></p></div>
+      </div>
+    </section>
+
+    <section class="support-section section-wrap" id="support" aria-labelledby="support-title">
+      <div class="support-card">
+        <div><p class="section-kicker">QUESTIONS, IDEAS OR PROBLEMS?</p><h2 id="support-title">WE'VE GOT <span>YOUR BACK.</span></h2><p>Questions about Who's the Worst?, game rules, or website issues? Send us a message.</p></div>
+        <form class="support-form" id="support-form">
+          <label for="support-name">Your name</label><input id="support-name" name="name" maxlength="80" autocomplete="name" required>
+          <label for="support-email">Your email</label><input id="support-email" name="email" type="email" maxlength="180" autocomplete="email" required>
+          <label for="support-topic">What can we help with?</label><select id="support-topic" name="topic"><option>General question</option><option>Game rules</option><option>Wishlist</option><option>Website bug</option><option>Other</option></select>
+          <label for="support-message">Message</label><textarea id="support-message" name="message" minlength="10" maxlength="2000" rows="5" required></textarea>
+          <div class="support-honeypot" aria-hidden="true"><label for="support-company">Company website</label><input id="support-company" name="company" tabindex="-1" autocomplete="off"></div>
+          <button class="wishlist-button" type="submit">✉ Open Email to Send</button>
+          <p class="support-note" id="support-status" aria-live="polite">This opens your email app with the message ready to send. No message is stored on this website.</p>
+        </form>
       </div>
     </section>
 
