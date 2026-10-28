@@ -107,3 +107,53 @@
 .beta-box-item img{display:block;width:100%;height:auto;max-height:390px;object-fit:contain;border-radius:9px}
 .beta-box-item figcaption{margin-top:9px;font:800 12px var(--body);letter-spacing:.12em}
 @media(max-width:600px){.beta-box-gallery{grid-template-columns:1fr;gap:22px}.beta-box-item img{max-height:400px}}
+
+
+/* FINAL LAYOUT SAFETY PASS: keep every section in normal flow and prevent overlap. */
+*,*::before,*::after{box-sizing:border-box}
+img,video,canvas,iframe{max-width:100%}
+body{overflow-x:hidden}
+main,section,header,footer,nav,article,figure,.section-wrap{min-width:0}
+.hero{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;overflow:clip}
+.hero-copy{display:flex;flex-direction:column;align-items:flex-start;min-width:0;position:relative;z-index:2;gap:0}
+.hero-copy>*{max-width:100%;min-width:0}
+.hero-copy .hero-tagline{display:block;position:relative!important;inset:auto!important;transform:none!important;width:100%;overflow-wrap:anywhere;white-space:normal}
+.hero-copy .hero-subtitle,.hero-copy .hero-description{position:relative!important;inset:auto!important;transform:none!important;width:100%;line-height:1.55}
+.hero-actions{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;width:100%;margin-top:22px}
+.hero-actions>*{max-width:100%;white-space:normal}
+.hero-note{position:relative!important;inset:auto!important;transform:none!important;max-width:100%;margin-top:22px}
+.hero-art{position:relative;min-width:0;width:100%;max-width:100%;isolation:isolate}
+.hero-art>*{max-width:100%}
+.site-header{gap:clamp(10px,2vw,28px)}
+.site-header .brand-3d{flex-shrink:1}
+.site-nav{min-width:0;flex-wrap:wrap;justify-content:flex-end}
+.crown-showcase,.wishlist-card,.support-card,.endgame-grid,.debate-inner{min-width:0}
+.crown-showcase-copy,.wishlist-copy,.wishlist-action,.support-card>*{min-width:0;overflow-wrap:anywhere}
+.crown-showcase-copy h2,.wishlist-copy h2,.support-card h2,.section-heading h2,.debate-copy h2,.endgame h2,.closing-cta h2{overflow-wrap:normal;word-break:normal}
+.beta-box-item img{max-width:100%;object-fit:contain}
+@media(max-width:850px){
+ .hero{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:24px!important;padding-top:32px!important}
+ .hero-copy{width:100%;order:0}
+ .hero-art{width:100%;order:1;margin:0 auto}
+ .hero-stamp{z-index:1}
+ .site-header{position:sticky}
+ .site-header .brand-3d{width:min(42vw,180px)}
+ .site-nav{flex-wrap:nowrap}
+}
+@media(max-width:560px){
+ .section-wrap{width:90%}
+ .hero{padding-bottom:42px!important}
+ .hero-copy .hero-tagline{font-size:clamp(24px,7vw,36px)!important;line-height:1.12!important}
+ .hero-actions{align-items:stretch;flex-direction:column;gap:12px}
+ .hero-actions .button,.hero-actions .text-link{width:100%;justify-content:space-between}
+ .hero-art{height:320px!important}
+ .hero-stamp{right:0;bottom:0}
+ .site-header{padding-inline:12px;gap:8px}
+ .site-header .brand-3d{width:145px;max-width:48vw}
+ .menu-toggle{flex:0 0 auto}
+ .crown-showcase{overflow:clip!important}
+ .crown-showcase-copy h2{font-size:clamp(34px,10vw,48px)}
+ .wishlist-card,.support-card{padding:20px}
+ .steps-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .step-card{min-width:0}
+}
