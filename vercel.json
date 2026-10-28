@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/who-s-the-worst",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/who-s-the-worst/",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}
