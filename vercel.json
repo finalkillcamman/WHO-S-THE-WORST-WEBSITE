@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/who-s-the-worst",
-      "destination": "/"
+      "destination": "/index.html"
     },
     {
       "source": "/who-s-the-worst/",
-      "destination": "/"
+      "destination": "/index.html"
     }
   ]
 }
